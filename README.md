@@ -1,6 +1,6 @@
 # changed
 
-![NPM version](https://badge.fury.io/js/changed.png)](http://badge.fury.io/js/changed)
+[![NPM version](https://badge.fury.io/js/changed.png)](http://badge.fury.io/js/changed)
 [![Build Status](https://travis-ci.org/prantlf/changed.png)](https://travis-ci.org/prantlf/changed)
 [![dependencies Status](https://david-dm.org/prantlf/changed/status.svg)](https://david-dm.org/prantlf/changed)
 [![devDependencies Status](https://david-dm.org/prantlf/changed/dev-status.svg)](https://david-dm.org/prantlf/changed?type=dev)
