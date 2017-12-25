@@ -65,7 +65,7 @@
   "homepage": "https://github.com/prantlf/changed#readme",
   "main": "lib/index.js",
   "module": "es/index.js",
-  "name": "changed",
+  "name": "changed.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/prantlf/changed.git"

@@ -1,13 +1,13 @@
 # changed
 
-[![NPM version](https://badge.fury.io/js/changed.png)](http://badge.fury.io/js/changed)
+[![NPM version](https://badge.fury.io/js/changed.js.png)](http://badge.fury.io/js/changed.js)
 [![Build Status](https://travis-ci.org/prantlf/changed.png)](https://travis-ci.org/prantlf/changed)
 [![dependencies Status](https://david-dm.org/prantlf/changed/status.svg)](https://david-dm.org/prantlf/changed)
 [![devDependencies Status](https://david-dm.org/prantlf/changed/dev-status.svg)](https://david-dm.org/prantlf/changed?type=dev)
 [![Greenkeeper badge](https://badges.greenkeeper.io/prantlf/changed.svg)](https://greenkeeper.io/)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
-[![NPM Downloads](https://nodei.co/npm/changed.png?downloads=true&stars=true)](https://www.npmjs.com/package/changed)
+[![NPM Downloads](https://nodei.co/npm/changed.js.png?downloads=true&stars=true)](https://www.npmjs.com/package/changed.js)
 
 A tiny (~1.5kb minified+gzipped) and [fast](https://github.com/prantlf/changed/blob/master/benchmark_results.csv), library for updating JavaScript objects and arrays directly.
 
@@ -16,6 +16,7 @@ Supports nested key paths via path arrays or [dot-bracket syntax](https://github
 ## Table of contents
 
 * [Motivation](#motivation)
+* [Installation](#installation)
 * [Usage](#usage)
 * [Methods](#methods)
   * [has](#has)
@@ -31,6 +32,14 @@ Supports nested key paths via path arrays or [dot-bracket syntax](https://github
 Objects with nested properties and arrays are used to store application state. Libraries like [Backbone](backbonejs.org) provide functions for inspecting and manipulating the state as methods of specialized objects like [`Backbone.Model`](http://backbonejs.org/#Model). This library provides only such methods without having to include the rest of the functionality of a bigger library. You can use other libraries to make your application complete; for example [*on-change*](https://github.com/prantlf/on-change) for property change notifications.
 
 This library has been inspired by [*unchanged*](https://github.com/planttheidea/unchanged), which has been used for the initial design and imnplementation. On the contrary to the immutable *unchanged*, this library supports mutable application states.
+
+# Installation
+
+You will need [node] version >= 4 and [npm] to install and use this module:
+
+    npm install changed.js
+
+Browser users will find non-minified and minified UMD-compliant scripts in the `dist` directory.
 
 ## Usage
 
@@ -232,3 +241,14 @@ Standard stuff, clone the repo and `npm install` dependencies. The npm scripts a
 * `transpile:lib` => run babel against all files in `src` to create files in `lib`
 * `transpile:es` => run babel against all files in `src` to create files in `es`, preserving ES2015 modules (for
   [`pkg.module`](https://github.com/rollup/rollup/wiki/pkg.module))
+
+## Contributing
+
+In lieu of a formal style guide, take care to maintain the existing coding style.
+
+## License
+
+Copyright (c) 2017 Ferdinand Prantl
+
+[node]: https://nodejs.org
+[npm]: https://npmjs.org
