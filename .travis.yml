@@ -13,6 +13,8 @@ node_js:
 #  - npm install -g npm
 before_script:
 #  - npm prune
+after_success:
+  - npm run semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
