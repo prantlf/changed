@@ -20,7 +20,7 @@ module.exports = {
     for (let i = 0; i < cycles; i++) {
       newValue = Math.random();
 
-      Object.assign({}, obj, {value: newValue});
+      Object.assign(obj, {value: newValue});
     }
   },
   objectSetLodashFp(cycles) {
@@ -84,84 +84,78 @@ module.exports = {
     const arr = array;
     const maxIndex = arr.length - 1;
 
-    let newArr, index, newVal;
+    let index, newVal;
 
     for (let i = 0; i < cycles; i++) {
-      newArr = [].concat(arr);
       index = ~~(Math.random() * maxIndex);
       newVal = Math.random();
 
-      newArr[index] = newVal;
+      arr[index] = newVal;
     }
   },
   arraySetLodashFp(cycles) {
     const arr = array;
     const maxIndex = arr.length - 1;
 
-    let newArr, index, newVal;
+    let index, newVal;
 
     for (let i = 0; i < cycles; i++) {
-      newArr = [].concat(arr);
       index = ~~(Math.random() * maxIndex);
       newVal = Math.random();
 
-      _.set([index], newVal, newArr);
+      _.set([index], newVal, arr);
     }
   },
   arraySetLodashFpDotty(cycles) {
     const arr = array;
     const maxIndex = arr.length - 1;
 
-    let newArr, index, newVal;
+    let index, newVal;
 
     for (let i = 0; i < cycles; i++) {
-      newArr = [].concat(arr);
       index = ~~(Math.random() * maxIndex);
       newVal = Math.random();
 
-      _.set(index, newVal, newArr);
+      _.set(index, newVal, arr);
     }
   },
   arraySetRamda(cycles) {
     const arr = array;
     const maxIndex = arr.length - 1;
 
-    let newArr, index, newVal;
+    let index, newVal;
 
     for (let i = 0; i < cycles; i++) {
-      newArr = [].concat(arr);
       index = ~~(Math.random() * maxIndex);
       newVal = Math.random();
 
-      assoc(index, newVal, newArr);
+      assoc(index, newVal, arr);
     }
   },
   arraySetUnchanged(cycles) {
     const arr = array;
     const maxIndex = arr.length - 1;
 
-    let newArr, index, newVal;
+    let index, newVal;
 
     for (let i = 0; i < cycles; i++) {
-      newArr = [].concat(arr);
       index = ~~(Math.random() * maxIndex);
       newVal = Math.random();
 
-      set([index], newVal, newArr);
+      set([index], newVal, arr);
     }
   },
   arraySetUnchangedDotty(cycles) {
     const arr = array;
     const maxIndex = arr.length - 1;
 
-    let newArr, index, newVal;
+    let index, newVal;
 
     for (let i = 0; i < cycles; i++) {
-      newArr = [].concat(arr);
       index = ~~(Math.random() * maxIndex);
       newVal = Math.random();
 
-      set(index, newVal, newArr);
+      set(index, newVal, arr);
     }
   }
 };

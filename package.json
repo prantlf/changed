@@ -1,5 +1,5 @@
 {
-  "author": "tony_quetano@planttheidea.com",
+  "author": "prantlf@gmail.com",
   "ava": {
     "babel": "inherit",
     "failFast": true,
@@ -23,12 +23,12 @@
     "Android >= 4"
   ],
   "bugs": {
-    "url": "https://github.com/planttheidea/unchanged/issues"
+    "url": "https://github.com/prantlf/changed/issues"
   },
   "dependencies": {
     "pathington": "^1.1.4"
   },
-  "description": "A tiny, fast, unopinionated handler for updating JS objects and arrays immutably",
+  "description": "Library for updating JavaScript objects and arrays (directly).",
   "devDependencies": {
     "ava": "^0.24.0",
     "babel-cli": "^6.26.0",
@@ -57,17 +57,17 @@
     "webpack-dev-server": "^2.9.7"
   },
   "keywords": [
-    "immutable",
+    "mutable",
     "functional"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/planttheidea/unchanged#readme",
+  "homepage": "https://github.com/prantlf/changed#readme",
   "main": "lib/index.js",
   "module": "es/index.js",
-  "name": "unchanged",
+  "name": "changed",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/planttheidea/unchanged.git"
+    "url": "git+https://github.com/prantlf/changed.git"
   },
   "scripts": {
     "benchmark": "npm run transpile:lib && NODE_ENV=production node ./benchmarks/index.js",
@@ -90,5 +90,5 @@
     "transpile:lib": "npm run clean:lib && BABEL_ENV=lib babel src --out-dir lib",
     "transpile:es": "npm run clean:es && BABEL_ENV=es babel src --out-dir es"
   },
-  "version": "1.0.1"
+  "version": "1.0.0"
 }

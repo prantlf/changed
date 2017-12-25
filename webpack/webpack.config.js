@@ -33,8 +33,8 @@ module.exports = {
   },
 
   output: {
-    filename: 'unchanged.js',
-    library: 'unchanged',
+    filename: 'changed.js',
+    library: 'changed',
     libraryTarget: 'umd',
     path: path.resolve(ROOT, 'dist'),
     umdNamedDefine: true

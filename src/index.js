@@ -1,10 +1,10 @@
 // utils
 import {__, curry} from './curry';
 import {
-  getDeepClone,
-  getDeeplyMergedObject,
+  visitObjectOnPath,
+  deeplyMergeObject,
   getNestedProperty,
-  getNewEmptyObject,
+  emptyObject,
   hasNestedProperty,
   isArray,
   isCloneable,
@@ -45,12 +45,12 @@ export const has = curry((path, object) => {
  * @function merge
  *
  * @description
- * get the deeply-merged object at path
+ * merges the value (the first object) to the second object on the specified path
  *
  * @param {Array<number|string>|null|number|string} path the path to match on the object
- * @param {Array<*>|Object} object the object to merge
  * @param {Array<*>|Object} object the object to merge with
- * @returns {Array<*>|Object} the new merged object
+ * @param {Array<*>|Object} object the object to merge with and to
+ * @returns {Array<*>|Object} the merged object
  */
 export const merge = curry((path, objectToMerge, object) => {
   if (!isCloneable(object)) {
@@ -58,29 +58,29 @@ export const merge = curry((path, objectToMerge, object) => {
   }
 
   return isEmptyKey(path)
-    ? getDeeplyMergedObject(object, objectToMerge)
-    : getDeepClone(path, object, (ref, key) => {
-      ref[key] = getDeeplyMergedObject(ref[key], objectToMerge);
+    ? deeplyMergeObject(object, objectToMerge)
+    : visitObjectOnPath(path, object, (ref, key) => {
+      ref[key] = deeplyMergeObject(ref[key], objectToMerge);
     });
 });
 
 /**
- * @function removeobject with quoted keys
+ * @function remove
  *
  * @description
  * remove the value in the object at the path requested
  *
  * @param {Array<number|string>|number|string} path the path to remove the value at
  * @param {Array<*>|Object} object the object to remove the value from
- * @returns {Array<*>|Object} a new object with the same structure and the value removed
+ * @returns {Array<*>|Object} the object with the value removed
  */
 export const remove = curry((path, object) => {
   if (isEmptyKey(path)) {
-    return getNewEmptyObject(object);
+    return emptyObject(object);
   }
 
   return hasNestedProperty(path, object)
-    ? getDeepClone(path, object, (ref, key) => {
+    ? visitObjectOnPath(path, object, (ref, key) => {
       if (isArray(ref)) {
         ref.splice(key, 1);
       } else {
@@ -99,12 +99,12 @@ export const remove = curry((path, object) => {
  * @param {Array<number|string>|number|string} path the path to set the value at
  * @param {*} value the value to set
  * @param {Array<*>|Object} object the object to set the value in
- * @returns {Array<*>|Object} a new object with the same structure and the value assigned
+ * @returns {Array<*>|Object} the object with the value assigned
  */
 export const set = curry((path, value, object) => {
   return isEmptyKey(path)
     ? value
-    : getDeepClone(path, object, (ref, key) => {
+    : visitObjectOnPath(path, object, (ref, key) => {
       ref[key] = value;
     });
 });
@@ -118,7 +118,7 @@ export const set = curry((path, value, object) => {
  * @param {Array<number|string>|null|number|string} path the path to assign the value at
  * @param {*} value the value to assign
  * @param {Array<*>|Object} object the object to assignobject the value in
- * @returns {Array<*>|Object} a new object with the same structure and the value added
+ * @returns {Array<*>|Object} the object with the value added
  */
 export const add = curry((path, value, object) => {
   const nestedValue = get(path, object);

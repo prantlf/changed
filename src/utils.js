@@ -2,16 +2,6 @@
 import {parse} from 'pathington';
 
 /**
- * @constant {Symbol} REACT_ELEMENT
- */
-const REACT_ELEMENT = typeof Symbol === 'function' && Symbol.for ? Symbol.for('react.element') : 0xeac7;
-
-/**
- * @constant {RegExp} FUNCTION_NAME
- */
-const FUNCTION_NAME = /^\s*function\s*([^\(]*)/i;
-
-/**
  * @function isArray
  */
 export const isArray = Array.isArray;
@@ -29,55 +19,8 @@ export const isCloneable = (object) => {
   return (
     !!object &&
     typeof object === 'object' &&
-    !(object instanceof Date || object instanceof RegExp) &&
-    object.$$typeof !== REACT_ELEMENT
+    !(object instanceof Date || object instanceof RegExp)
   );
-};
-
-/**
- * @function isGlobalConstructor
- *
- * @description
- * is the function passed a global constructor function
- *
- * @param {function} fn the function to test
- * @returns {boolean} is the function a global constructor
- */
-export const isGlobalConstructor = (fn) => {
-  return (
-    typeof fn === 'function' &&
-    (typeof window !== 'undefined' ? window : global)[
-      fn.name || Function.prototype.toString.call(fn).split(FUNCTION_NAME)[1]
-    ] === fn
-  );
-};
-
-/**
- * @function getShallowClone
- *
- * @description
- * get a shallow clone of the value passed based on the type requested (maintaining prototype if possible)
- *
- * @param {Array<*>|Object} object the object to clone
- * @param {number|string} key the key to base the object type fromisReactElement(object) ||
- * @returns {Array<*>|Object} a shallow clone of the value
- */
-export const getShallowClone = (object) => {
-  if (isArray(object)) {
-    return [...object];
-  }
-
-  if (object.constructor === Object) {
-    return {...object};
-  }
-
-  return isGlobalConstructor(object.constructor)
-    ? {}
-    : Object.keys(object).reduce((clone, key) => {
-      clone[key] = object[key];
-
-      return clone;
-    }, Object.create(Object.getPrototypeOf(object)));
 };
 
 /**
@@ -94,45 +37,44 @@ export const getNewEmptyChild = (key) => {
 };
 
 /**
- * @function getNewEmptyObject
+ * @function emptyObject
  *
  * @description
- * get a new empty object for the type of key provided
+ * empties object of the type of key provided
  *
- * @param {Array|Object} object the object to get an empty value of
+ * @param {Array|Object} object the object to empty
  * @returns {Array|Object} the empty object
  */
-export const getNewEmptyObject = (object) => {
-  return isArray(object) ? [] : {};
+export const emptyObject = (object) => {
+  if (isArray(object)) {
+    object.length = 0;
+  } else if (typeof object === 'object') {
+    for (const property in object) {
+      if (object.hasOwnProperty(property)) {
+        delete object[property];
+      }
+    }
+  } else {
+    return {};
+  }
+
+  return object;
 };
 
 /**
- * @function cloneIfPossible
+ * @function getEnsuredChild
  *
  * @description
- * clone the object passed if it is mergeable, else return itself
+ * gets a child of the correct type, although there is none actual
  *
- * @param {*} object he object to clone
- * @returns {*} the cloned object
+ * @param {Array<*>|Object} object child object to return if the type is right
+ * @param {number|string} nextKey the key pointing to the child
+ * @returns {Array<*>|Object} the child object
  */
-export const cloneIfPossible = (object) => {
-  return isCloneable(object) ? getShallowClone(object) : object;
-};
-
-/**
- * @function getNewChildClone
- *
- * @description
- * get the shallow clone of the child when it is the correct type
- *
- * @param {Array<*>|Object} object the object to clone
- * @param {number|string} nextKey the key that the next object will be based from
- * @returns {Array<*>|Object} the clone of the key at object
- */
-export const getNewChildClone = (object, nextKey) => {
+export const getEnsuredChild = (object, nextKey) => {
   const emptyChild = getNewEmptyChild(nextKey);
 
-  return isCloneable(object) && isArray(object) === isArray(emptyChild) ? getShallowClone(object) : emptyChild;
+  return isCloneable(object) && isArray(object) === isArray(emptyChild) ? object : emptyChild;
 };
 
 /**
@@ -144,27 +86,27 @@ export const getNewChildClone = (object, nextKey) => {
  * @param {Array<number|string>} path the path to find a match at
  * @param {Array<*>|Object} object the object to find the path in
  * @param {function} onMatch when a match is found, call this method
- * @param {boolean} shouldClone should the object be cloned
+ * @param {boolean} shouldModify should the object be modified
  * @param {*} noMatchValue when no match is found, return this value
  * @param {number} [index=0] the index of the key to process
  * @returns {*} either the return from onMatch or the noMatchValue
  */
-export const onMatchAtPath = (path, object, onMatch, shouldClone, noMatchValue, index = 0) => {
+export const onMatchAtPath = (path, object, onMatch, shouldModify, noMatchValue, index = 0) => {
   const key = path[index];
   const nextIndex = index + 1;
 
   if (nextIndex === path.length) {
-    const result = object || shouldClone ? onMatch(object, key) : noMatchValue;
+    const result = object || shouldModify ? onMatch(object, key) : noMatchValue;
 
-    return shouldClone ? object : result;
+    return shouldModify ? object : result;
   }
 
-  if (shouldClone) {
+  if (shouldModify) {
     object[key] = onMatchAtPath(
       path,
-      getNewChildClone(object[key], path[nextIndex]),
+      getEnsuredChild(object[key], path[nextIndex]),
       onMatch,
-      shouldClone,
+      shouldModify,
       noMatchValue,
       nextIndex
     );
@@ -173,44 +115,40 @@ export const onMatchAtPath = (path, object, onMatch, shouldClone, noMatchValue, 
   }
 
   return object && object[key]
-    ? onMatchAtPath(path, object[key], onMatch, shouldClone, noMatchValue, nextIndex)
+    ? onMatchAtPath(path, object[key], onMatch, shouldModify, noMatchValue, nextIndex)
     : noMatchValue;
 };
 
 /**
- * @function getDeeplyMergedObject
+ * @function deeplyMergeObject
  *
  * @description
- * get the objects merged into a new object
+ * merges the second to the first object
  *
  * @param {Array<*>|Object} object1 the object to merge into
  * @param {Array<*>|Object} object2 the object to merge
  * @returns {Array<*>|Object} the merged object
  */
-export const getDeeplyMergedObject = (object1, object2) => {
+export const deeplyMergeObject = (object1, object2) => {
   const isObject1Array = isArray(object1);
 
   if (isObject1Array !== isArray(object2)) {
-    return cloneIfPossible(object2);
+    return object2;
   }
 
   if (isObject1Array) {
-    return [...object1, ...object2.map(cloneIfPossible)];
+    Array.prototype.push.apply(object1, object2);
+
+    return object1;
   }
 
-  const target = isCloneable(object1)
-    ? Object.keys(object1).reduce((clone, key) => {
-      clone[key] = cloneIfPossible(object1[key]);
+  const target = isCloneable(object1) ? object1 : {};
 
-      return clone;
-    }, {})
-    : {};
+  Object.keys(object2).forEach((key) => {
+    target[key] = isCloneable(object2[key]) ? deeplyMergeObject(object1[key], object2[key]) : object2[key];
+  });
 
-  return Object.keys(object2).reduce((clone, key) => {
-    clone[key] = isCloneable(object2[key]) ? getDeeplyMergedObject(object1[key], object2[key]) : object2[key];
-
-    return clone;
-  }, target);
+  return target;
 };
 
 /**
@@ -249,7 +187,7 @@ export const getNestedProperty = (path, object) => {
 };
 
 /**
- * @function getDeepClone
+ * @function visitObjectOnPath
  *
  * @description
  * parse the path passed and clone the object at that path
@@ -259,17 +197,17 @@ export const getNestedProperty = (path, object) => {
  * @param {function} onMatch the callback to execute
  * @returns {Array<*>|Object} the clone object
  */
-export const getDeepClone = (path, object, onMatch) => {
+export const visitObjectOnPath = (path, object, onMatch) => {
   const parsedPath = getParsedPath(path);
-  const topLevelClone = isCloneable(object) ? getShallowClone(object) : getNewEmptyChild(parsedPath[0]);
+  const topLevelObject = isCloneable(object) ? object : getNewEmptyChild(parsedPath[0]);
 
   if (parsedPath.length === 1) {
-    onMatch(topLevelClone, parsedPath[0]);
+    onMatch(topLevelObject, parsedPath[0]);
 
-    return topLevelClone;
+    return topLevelObject;
   }
 
-  return onMatchAtPath(parsedPath, topLevelClone, onMatch, true);
+  return onMatchAtPath(parsedPath, topLevelObject, onMatch, true);
 };
 
 /**

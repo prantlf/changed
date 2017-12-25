@@ -9,9 +9,9 @@ test('if add will add the top-level value to the object', (t) => {
 
   const result = index.add('key', 'value', object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, {
-    ...object,
+    top: 'level',
     key: 'value'
   });
 });
@@ -21,8 +21,8 @@ test('if add will add the top-level value to the array', (t) => {
 
   const result = index.add(null, 'value', object);
 
-  t.not(result, object);
-  t.deepEqual(result, [...object, 'value']);
+  t.is(result, object);
+  t.deepEqual(result, ['top', 'level', 'value']);
 });
 
 test('if add will add the top-level value to the nested array', (t) => {
@@ -32,10 +32,9 @@ test('if add will add the top-level value to the nested array', (t) => {
 
   const result = index.add('nested', 'value', object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, {
-    ...object,
-    nested: [...object.nested, 'value']
+    nested: ['top', 'level', 'value']
   });
 });
 
@@ -48,9 +47,11 @@ test('if add will add the deeply-nested value to the object', (t) => {
 
   const result = index.add('some.other', 'value', object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, {
-    ...object,
+    deeply: {
+      nested: 'value'
+    },
     some: {
       other: 'value'
     }
@@ -70,10 +71,14 @@ test('if add will add the deeply-nested value to the array', (t) => {
 
   const result = index.add('[0].some[0].other', 'value', object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, [
     {
-      ...object[0],
+      deeply: [
+        {
+          nested: 'value'
+        }
+      ],
       some: [
         {
           other: 'value'
@@ -83,22 +88,13 @@ test('if add will add the deeply-nested value to the array', (t) => {
   ]);
 });
 
-test('if add will return the value= if an empty key', (t) => {
+test('if add will return the value if an empty key', (t) => {
   const object = {top: 'level'};
 
   const result = index.add(null, 'value', object);
 
   t.not(result, object);
   t.is(result, 'value');
-});
-
-test('if add will add the value to the array if an empty key', (t) => {
-  const object = ['top', 'level'];
-
-  const result = index.add(null, 'value', object);
-
-  t.not(result, object);
-  t.deepEqual(result, [...object, 'value']);
 });
 
 test('if add will handle a ridiculous entry', (t) => {
@@ -108,7 +104,7 @@ test('if add will handle a ridiculous entry', (t) => {
 
   const result = index.add(key, value, object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, {
     some: [
       undefined,
@@ -363,10 +359,10 @@ test('if merge will merge the complete objects if the key is empty', (t) => {
 
   const result = index.merge(path, objectToMerge, object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, {
-    ...object,
-    ...objectToMerge
+    object: 'to merge',
+    existing: 'object'
   });
 });
 
@@ -383,11 +379,12 @@ test('if merge will merge the objects at the path specified when the key is not 
 
   const result = index.merge(path, objectToMerge, object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, {
-    ...object,
+    existing: 'object',
     [path]: {
-      ...objectToMerge
+      object: 'to merge',
+      [path]: 'final value'
     }
   });
 });
@@ -400,7 +397,7 @@ test('if remove will return an empty version of the object when the key is empty
 
   const result = index.remove(path, object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, {});
 });
 
@@ -409,7 +406,7 @@ test('if remove will remove the top-level value from the object', (t) => {
 
   const result = index.remove('key', object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, {});
 });
 
@@ -418,8 +415,8 @@ test('if remove will remove the top-level value from the array', (t) => {
 
   const result = index.remove(0, object);
 
-  t.not(result, object);
-  t.deepEqual(result, object.slice(1));
+  t.is(result, object);
+  t.deepEqual(result, ['level']);
 });
 
 test('if remove will remove the deeply-nested value from the object', (t) => {
@@ -431,7 +428,7 @@ test('if remove will remove the deeply-nested value from the object', (t) => {
 
   const result = index.remove('deeply.nested', object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, {
     deeply: {}
   });
@@ -450,7 +447,7 @@ test('if remove will remove the deeply-nested value from the array', (t) => {
 
   const result = index.remove('[0].deeply[0].nested', object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, [
     {
       deeply: [{}]
@@ -502,15 +499,31 @@ test('if remove will handle a ridiculous entry', (t) => {
 
   const result = index.remove(path, object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, {
-    ...object,
     some: [
       undefined,
       {
         deeply: [[{}]]
       }
-    ]
+    ],
+    something: {
+      totally: [
+        {
+          different: {
+            that: [
+              [
+                {
+                  should: {
+                    be: 'untouched'
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
   });
 });
 
@@ -522,9 +535,9 @@ test('if set will set the value on the top-level object', (t) => {
 
   const result = index.set(path, value, object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, {
-    ...object,
+    key: 'value',
     [path]: value
   });
 });
@@ -537,13 +550,8 @@ test('if set will set the value on the top-level array', (t) => {
 
   const result = index.set(path, value, object);
 
-  t.not(result, object);
-  t.deepEqual(
-    result,
-    object.map((objectValue, index) => {
-      return index === path ? value : objectValue;
-    })
-  );
+  t.is(result, object);
+  t.deepEqual(result, ['top', 'otherValue']);
 });
 
 test('if set will set the value on the deeply-nested object', (t) => {
@@ -555,11 +563,10 @@ test('if set will set the value on the deeply-nested object', (t) => {
 
   const result = index.set('deeply.ensconsed', 'otherValue', object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, {
-    ...object,
     deeply: {
-      ...object.deeply,
+      nested: 'value',
       ensconsed: 'otherValue'
     }
   });
@@ -578,13 +585,12 @@ test('if set will set the value on the deeply-nested array', (t) => {
 
   const result = index.set('[0].deeply[0].ensconsed', 'otherValue', object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, [
     {
-      ...object[0],
       deeply: [
         {
-          ...object[0].deeply[0],
+          nested: 'value',
           ensconsed: 'otherValue'
         }
       ]
@@ -629,9 +635,8 @@ test('if set will handle a ridiculous entry', (t) => {
 
   const result = index.set(path, value, object);
 
-  t.not(result, object);
+  t.is(result, object);
   t.deepEqual(result, {
-    ...object,
     some: [
       undefined,
       {
@@ -643,6 +648,23 @@ test('if set will handle a ridiculous entry', (t) => {
           ]
         ]
       }
-    ]
+    ],
+    something: {
+      totally: [
+        {
+          different: {
+            that: [
+              [
+                {
+                  should: {
+                    be: 'untouched'
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
   });
 });

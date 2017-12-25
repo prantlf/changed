@@ -9,7 +9,7 @@ module.exports = Object.assign({}, defaultConfig, {
   devtool: undefined,
 
   output: Object.assign({}, defaultConfig.output, {
-    filename: 'unchanged.min.js'
+    filename: 'changed.min.js'
   }),
 
   plugins: defaultConfig.plugins.concat([

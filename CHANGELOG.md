@@ -1,10 +1,4 @@
-# unchanged CHANGELOG
-
-Yes, the irony is not lost on me. :)
-
-## 1.0.1
-
-* Remove duplicate call to `isCloneable` (performance improvement when cloning)
+# changed CHANGELOG
 
 ## 1.0.0
 
