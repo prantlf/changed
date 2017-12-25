@@ -1,6 +1,6 @@
 # changed
 
-A tiny (~3.5kb minified+gzipped) and [fast](https://github.com/prantlf/changed/blob/master/benchmark_results.csv), library for updating JavaScript objects and arrays directly.
+A tiny (~1.5kb minified+gzipped) and [fast](https://github.com/prantlf/changed/blob/master/benchmark_results.csv), library for updating JavaScript objects and arrays directly.
 
 Supports nested key paths via path arrays or [dot-bracket syntax](https://github.com/planttheidea/pathington), and all methods are curriable (with placeholder support) for composability. Can support typical changes of view-model attributes by methods `has`, `get`, `set`, `remove`, `add` and `merge` with a small footprint.
 
