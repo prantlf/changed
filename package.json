@@ -84,7 +84,7 @@
     "prepublish": "if in-publish; then npm run prepublish:compile; fi",
     "prepublish:compile": "npm run lint && npm run test:coverage && npm run transpile:lib && npm run transpile:es && npm run dist",
     "start": "npm run dev",
-    "test": "NODE_PATH=. NODE_ENV=production BABEL_ENV=test ava",
+    "test": "NODE_PATH=. NODE_ENV=production BABEL_ENV=test ./node_modules/.bin/ava",
     "test:coverage": "nyc npm test",
     "test:watch": "npm test -- --watch",
     "transpile:lib": "npm run clean:lib && BABEL_ENV=lib babel src --out-dir lib",
