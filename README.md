@@ -1,5 +1,14 @@
 # changed
 
+![NPM version](https://badge.fury.io/js/changed.png)](http://badge.fury.io/js/changed)
+[![Build Status](https://travis-ci.org/prantlf/changed.png)](https://travis-ci.org/prantlf/changed)
+[![dependencies Status](https://david-dm.org/prantlf/changed/status.svg)](https://david-dm.org/prantlf/changed)
+[![devDependencies Status](https://david-dm.org/prantlf/changed/dev-status.svg)](https://david-dm.org/prantlf/changed?type=dev)
+[![Greenkeeper badge](https://badges.greenkeeper.io/prantlf/changed.svg)](https://greenkeeper.io/)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+
+[![NPM Downloads](https://nodei.co/npm/changed.png?downloads=true&stars=true)](https://www.npmjs.com/package/changed)
+
 A tiny (~1.5kb minified+gzipped) and [fast](https://github.com/prantlf/changed/blob/master/benchmark_results.csv), library for updating JavaScript objects and arrays directly.
 
 Supports nested key paths via path arrays or [dot-bracket syntax](https://github.com/planttheidea/pathington), and all methods are curriable (with placeholder support) for composability. Can support typical changes of view-model attributes by methods `has`, `get`, `set`, `remove`, `add` and `merge` with a small footprint.
