@@ -248,7 +248,7 @@ In lieu of a formal style guide, take care to maintain the existing coding style
 
 ## License
 
-Copyright (c) 2017 Ferdinand Prantl
+Copyright (c) 2017-2018 Ferdinand Prantl
 
 [node]: https://nodejs.org
 [npm]: https://npmjs.org

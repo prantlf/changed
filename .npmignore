@@ -5,9 +5,12 @@
 .idea
 .npmignore
 .nyc_output
+.travis.yml
 coverage
 DEV_ONLY
 node_modules
 src
 test
 webpack
+benchmarks
+benchmark_results.csv
