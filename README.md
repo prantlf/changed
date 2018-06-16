@@ -4,7 +4,6 @@
 [![Build Status](https://travis-ci.org/prantlf/changed.png)](https://travis-ci.org/prantlf/changed)
 [![dependencies Status](https://david-dm.org/prantlf/changed/status.svg)](https://david-dm.org/prantlf/changed)
 [![devDependencies Status](https://david-dm.org/prantlf/changed/dev-status.svg)](https://david-dm.org/prantlf/changed?type=dev)
-[![Greenkeeper badge](https://badges.greenkeeper.io/prantlf/changed.svg)](https://greenkeeper.io/)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 [![NPM Downloads](https://nodei.co/npm/changed.js.png?downloads=true&stars=true)](https://www.npmjs.com/package/changed.js)
