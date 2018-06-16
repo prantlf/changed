@@ -35,7 +35,7 @@ This library has been inspired by [*unchanged*](https://github.com/planttheidea/
 
 # Installation
 
-You will need [node] version >= 4 and [npm] to install and use this module:
+You will need [node] version >= 6 and [npm] to install and use this module:
 
     npm install changed.js
 
