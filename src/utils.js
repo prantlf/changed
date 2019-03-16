@@ -15,13 +15,11 @@ export const isArray = Array.isArray;
  * @param {*} object the object to test
  * @returns {boolean} can the object be merged
  */
-export const isCloneable = (object) => {
-  return (
-    !!object &&
-    typeof object === 'object' &&
-    !(object instanceof Date || object instanceof RegExp)
-  );
-};
+export const isCloneable = (object) => (
+  !!object
+    && typeof object === 'object'
+    && !(object instanceof Date || object instanceof RegExp)
+);
 
 /**
  * @function getNewEmptyChild
@@ -32,9 +30,7 @@ export const isCloneable = (object) => {
  * @param {number|string} key the key to test
  * @returns {Array|Object} the empty child
  */
-export const getNewEmptyChild = (key) => {
-  return typeof key === 'number' ? [] : {};
-};
+export const getNewEmptyChild = (key) => typeof key === 'number' ? [] : {};
 
 /**
  * @function emptyObject
@@ -160,9 +156,7 @@ export const deeplyMergeObject = (object1, object2) => {
  * @param {Array<number|string>|number|string} path the path to parse
  * @returns {Array<number|string>} the parsed path
  */
-export const getParsedPath = (path) => {
-  return isArray(path) ? path : parse(path);
-};
+export const getParsedPath = (path) => isArray(path) ? path : parse(path);
 
 /**
  * @function getNestedProperty
@@ -181,9 +175,7 @@ export const getNestedProperty = (path, object) => {
     return object ? object[parsedPath[0]] : undefined;
   }
 
-  return onMatchAtPath(parsedPath, object, (ref, key) => {
-    return ref[key];
-  });
+  return onMatchAtPath(parsedPath, object, (ref, key) => ref[key]);
 };
 
 /**
@@ -230,9 +222,7 @@ export const hasNestedProperty = (path, object) => {
   return onMatchAtPath(
     parsedPath,
     object,
-    (ref, key) => {
-      return !!ref && ref[key] !== void 0;
-    },
+    (ref, key) => !!ref && ref[key] !== void 0,
     false,
     false
   );
@@ -247,6 +237,4 @@ export const hasNestedProperty = (path, object) => {
  * @param {*} object the object to test
  * @returns {boolean} is the object an empty key value
  */
-export const isEmptyKey = (object) => {
-  return object === void 0 || object === null || (isArray(object) && !object.length);
-};
+export const isEmptyKey = (object) => object === void 0 || object === null || (isArray(object) && !object.length);

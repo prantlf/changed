@@ -1,5 +1,8 @@
 // utils
-import {__, curry} from './curry';
+import {
+  __,
+  curry,
+} from './curry';
 import {
   visitObjectOnPath,
   deeplyMergeObject,
@@ -8,7 +11,7 @@ import {
   hasNestedProperty,
   isArray,
   isCloneable,
-  isEmptyKey
+  isEmptyKey,
 } from './utils';
 
 export {__};
@@ -23,9 +26,7 @@ export {__};
  * @param {Array<*>|Object} object the object to get the value from
  * @returns {*} the value requested
  */
-export const get = curry((path, object) => {
-  return isEmptyKey(path) ? object : getNestedProperty(path, object);
-});
+export const get = curry((path, object) => isEmptyKey(path) ? object : getNestedProperty(path, object));
 
 /**
  * @function has
@@ -37,9 +38,7 @@ export const get = curry((path, object) => {
  * @param {Array<*>|Object} object the object to get the value from
  * @returns {boolean} does the path exist
  */
-export const has = curry((path, object) => {
-  return isEmptyKey(path) ? !!object : hasNestedProperty(path, object);
-});
+export const has = curry((path, object) => isEmptyKey(path) ? !!object : hasNestedProperty(path, object));
 
 /**
  * @function merge
@@ -101,13 +100,11 @@ export const remove = curry((path, object) => {
  * @param {Array<*>|Object} object the object to set the value in
  * @returns {Array<*>|Object} the object with the value assigned
  */
-export const set = curry((path, value, object) => {
-  return isEmptyKey(path)
-    ? value
-    : visitObjectOnPath(path, object, (ref, key) => {
-      ref[key] = value;
-    });
-});
+export const set = curry((path, value, object) => isEmptyKey(path)
+  ? value
+  : visitObjectOnPath(path, object, (ref, key) => {
+    ref[key] = value;
+  }));
 
 /**
  * @function add

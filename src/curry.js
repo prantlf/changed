@@ -14,9 +14,7 @@ export const __ = typeof Symbol === 'function' ? Symbol('placeholder') : 0xedd1;
  * @returns {Array<*>} the complete list of args
  */
 export const getPassedArgs = (originalArgs, nextArgs) => {
-  const argsToPass = originalArgs.map((arg) => {
-    return arg === __ && nextArgs.length ? nextArgs.shift() : arg;
-  });
+  const argsToPass = originalArgs.map((arg) => arg === __ && nextArgs.length ? nextArgs.shift() : arg);
 
   return nextArgs.length ? argsToPass.concat(nextArgs) : argsToPass;
 };
@@ -53,13 +51,9 @@ export const isAnyPlaceholder = (args, arity) => {
 export const curry = (fn) => {
   const arity = fn.length;
 
-  const curried = (...args) => {
-    return args.length >= arity && !isAnyPlaceholder(args, arity)
-      ? fn(...args)
-      : (...nextArgs) => {
-        return curried(...getPassedArgs(args, nextArgs));
-      };
-  };
+  const curried = (...args) => args.length >= arity && !isAnyPlaceholder(args, arity)
+    ? fn(...args)
+    : (...nextArgs) => curried(...getPassedArgs(args, nextArgs));
 
   return curried;
 };
