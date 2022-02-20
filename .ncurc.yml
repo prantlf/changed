@@ -1,0 +1,7 @@
+reject:
+  - ava
+  - eslint
+  - html-webpack-plugin
+  - webpack
+  - webpack-cli
+  - webpack-dev-server

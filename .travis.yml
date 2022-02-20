@@ -6,11 +6,7 @@ cache:
 notifications:
   email: false
 node_js:
-  - '12'
-  - '10'
-  - '8'
-after_success:
-  - npx semantic-release
+  - '16'
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
